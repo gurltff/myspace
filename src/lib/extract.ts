@@ -42,7 +42,11 @@ async function pdfPagesToImages(data: ArrayBuffer): Promise<HTMLCanvasElement[]>
 async function ocr(images: (HTMLCanvasElement | File)[], progress: Progress): Promise<string> {
   const { createWorker } = await import('tesseract.js');
   let current = 0;
+  // OCR assets are self-hosted from /tesseract (see scripts/copy-ocr.mjs) — no CDN or API key needed
   const worker = await createWorker('eng', 1, {
+    workerPath: '/tesseract/worker.min.js',
+    corePath: '/tesseract/',
+    langPath: '/tesseract',
     logger: (m: { status: string; progress: number }) => {
       if (m.status === 'recognizing text') progress(`OCR page ${current + 1}/${images.length}`, ((current + m.progress) / images.length) * 100);
       else progress(m.status, 0);

@@ -21,7 +21,7 @@ export interface Detected extends Variable {
 export const NICE_ANGLES = [30, 37, 45, 53, 60, 90];
 
 const UNIT_LIST = [
-  'm/s\\^?2', 'm/s', 'km/h', 'rad/s', 'kg', 'g', 'mg', 'km', 'cm', 'mm', 'nm', 'μm', 'um', 'Å', 'm',
+  'm/s\\^?2', 'm/s', 'km/h', 'rad/s', 'N/m', 'N/C', 'V/m', 'W/m\\^?2', 'J/K', 'kg', 'g', 'mg', 'km', 'cm', 'mm', 'nm', 'μm', 'um', 'Å', 'm',
   'ms', 's', 'min', 'kHz', 'MHz', 'Hz', 'kN', 'N', 'kJ', 'MeV', 'keV', 'eV', 'J', 'kW', 'W', 'kV', 'mV', 'V',
   'mA', 'μA', 'A', 'kΩ', 'Ω', 'ohms?', 'μF', 'pF', 'nF', 'F', 'mH', 'H', 'Wb', 'T', 'K', '°C', '°', 'degrees?',
   'mol', 'atm', 'Pa', 'L', 'C', 'rpm',
@@ -35,7 +35,7 @@ const QTY_RE = new RegExp(
 );
 
 const NAME_BY_UNIT: [RegExp, string][] = [
-  [/^m\/s\^?2$/, 'a'], [/^(m\/s|km\/h)$/, 'v'], [/^rad\/s$/, 'w'], [/^(kg|g|mg)$/, 'mass'],
+  [/^N\/m$/, 'k'], [/^(N\/C|V\/m)$/, 'Ef'], [/^m\/s\^?2$/, 'a'], [/^(m\/s|km\/h)$/, 'v'], [/^rad\/s$/, 'w'], [/^(kg|g|mg)$/, 'mass'],
   [/^(nm|Å|μm|um)$/, 'lambda'], [/^(km|cm|mm|m)$/, 'd'], [/^(ms|s|min)$/, 't'], [/Hz$/, 'f'], [/N$/, 'F'],
   [/(eV|J)$/, 'E'], [/W$/, 'P'], [/V$/, 'V'], [/A$/, 'I'], [/(Ω|ohm)/, 'R'], [/F$/, 'Cap'], [/H$/, 'Lind'],
   [/^Wb$/, 'phi'], [/^T$/, 'B'], [/^(K|°C)$/, 'T'], [/^(°|degrees?)$/, 'theta'], [/^mol$/, 'n'], [/^(atm|Pa)$/, 'p'],

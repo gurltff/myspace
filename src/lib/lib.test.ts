@@ -275,3 +275,10 @@ describe('observations', () => {
     expect(finalResult('mean_g', cols, rows)).toBeCloseTo(mean);
   });
 });
+
+describe('compound units', () => {
+  it('detects spring constants', () => {
+    const v = detectQuantities('A spring of 300 N/m is compressed by 4 cm.');
+    expect(v.map((x) => [x.name, x.unit])).toEqual([['k', 'N/m'], ['d', 'cm']]);
+  });
+});
