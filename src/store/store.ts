@@ -1,7 +1,7 @@
 import { useRef, useSyncExternalStore } from 'react';
 import { produce, type Draft } from 'immer';
 import type { AppData } from './types';
-import { makeSeed } from './seed';
+import { makeSeed, SUBJECT_COLORS, OLD_SUBJECT_COLORS } from './seed';
 import { supabase } from './supabase';
 import { ymd } from '../lib/dates';
 
@@ -10,7 +10,12 @@ const KEY = 'studynest:data:v1';
 function load(): AppData {
   try {
     const raw = localStorage.getItem(KEY);
-    if (raw) return { ...makeSeed(true), ...JSON.parse(raw) };
+    if (raw) {
+      const d: AppData = { ...makeSeed(true), ...JSON.parse(raw) };
+      // move subjects off the old scrapbook palette
+      d.subjects = d.subjects.map((x) => (OLD_SUBJECT_COLORS.includes(x.color) ? { ...x, color: SUBJECT_COLORS[OLD_SUBJECT_COLORS.indexOf(x.color) % SUBJECT_COLORS.length] } : x));
+      return d;
+    }
   } catch {
     /* ignore */
   }

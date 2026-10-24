@@ -1,4 +1,4 @@
-const L = '#5e584a';
+const L = '#5e3a34';
 type P = { size?: number };
 
 function Wrap({ size = 20, children }: P & { children: React.ReactNode }) {

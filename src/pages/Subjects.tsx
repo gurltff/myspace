@@ -20,9 +20,9 @@ export default function Subjects() {
   const loc = useLocation();
   const tab = loc.pathname.includes('/plan') ? 'plan' : 'subjects';
   return (
-    <div className="space-y-4">
+    <div className="space-y-6">
       <Box className="pt-4">
-        <PageTitle sub="semesters, syllabus & a rule-based study plan">SUBJECTS & PLAN</PageTitle>
+        <PageTitle sub="semesters, syllabus & a rule-based study plan">Subjects &amp; Plan</PageTitle>
         <Tabs tabs={[{ id: 'subjects', label: 'semesters & syllabus' }, { id: 'plan', label: 'study plan' }]} value={tab} onChange={(t) => nav(t === 'plan' ? '/subjects/plan' : '/subjects')} />
       </Box>
       <Routes>

@@ -30,16 +30,16 @@ export default function Ramble() {
   };
 
   return (
-    <div className="space-y-4">
+    <div className="space-y-6">
       <Box className="pt-4">
-        <PageTitle sub="blog / journal — private by default, public posts show on your blog page">RAMBLE ✎</PageTitle>
+        <PageTitle sub="blog / journal — private by default, public posts show on your blog page">Ramble</PageTitle>
         <div className="flex gap-2 flex-wrap"><Btn onClick={create}>+ new post</Btn><a href="/blog" target="_blank" rel="noreferrer"><Btn variant="sky">🌐 view public blog</Btn></a></div>
       </Box>
       <AnimatePresence mode="wait">
         {open ? (
           <PostEditor key={open.id} post={open} onClose={() => setOpenId(null)} />
         ) : (
-          <motion.div key="list" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="space-y-4">
+          <motion.div key="list" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="space-y-6">
             <Box title="search & filter" delay={0.05}>
               <div className="grid grid-cols-2 sm:grid-cols-5 gap-2">
                 <Input placeholder="search…" className="col-span-2 sm:col-span-1" value={f.q} onChange={(e) => setF({ ...f, q: e.target.value })} />

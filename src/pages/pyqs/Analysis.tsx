@@ -6,9 +6,9 @@ import { subjectPattern } from '../../store/derive';
 import { STEMS } from '../../lib/stems';
 import type { PatternSection } from '../../lib/pattern';
 
-export const CHART_COLORS = ['#a9bf96', '#f3b8c2', '#bcd3ea', '#f5dd96', '#cfbde8', '#f0b98d', '#9fd3c7'];
-export const chartInk = () => (document.documentElement.dataset.theme === 'dark' ? '#ede7d3' : '#5e584a');
-export const tooltipStyle = { background: 'var(--panel)', border: '2px solid var(--line)', borderRadius: 10, fontFamily: 'Gaegu', color: 'var(--ink)' };
+export const CHART_COLORS = ['#f2b7c1', '#7a4740', '#e9c9b8', '#d9a7b0', '#f6e2c4', '#c9707f', '#cfb2a8'];
+export const chartInk = () => (document.documentElement.dataset.theme === 'dark' ? '#ede7d3' : '#6e4640');
+export const tooltipStyle = { background: 'var(--panel)', border: '2px solid var(--line)', borderRadius: 10, fontFamily: 'Arial', color: 'var(--ink)' };
 
 export default function Analysis({ subjectId }: { subjectId: string }) {
   const s = useStore((x) => x);
@@ -63,12 +63,12 @@ export default function Analysis({ subjectId }: { subjectId: string }) {
         )}
       </Box>
 
-      <div className="grid md:grid-cols-2 gap-4">
+      <div className="grid md:grid-cols-2 gap-6">
         <Box title="unit-wise weightage" delay={0.1}>
           <div className="h-64">
             <ResponsiveContainer>
               <PieChart>
-                <Pie data={unitData} dataKey="value" nameKey="name" innerRadius="40%" outerRadius="68%" paddingAngle={3} stroke={ink} strokeWidth={2} label={(e: { pct: number; name: string }) => `${e.name} ${e.pct}%`} animationDuration={900}>
+                <Pie data={unitData} dataKey="value" nameKey="name" innerRadius="38%" outerRadius="62%" paddingAngle={3} stroke={ink} strokeWidth={2} label={(e: { pct: number; name: string }) => `${e.name.replace('Unit ', 'U')} ${e.pct}%`} animationDuration={900}>
                   {unitData.map((_, i) => <Cell key={i} fill={CHART_COLORS[i % CHART_COLORS.length]} />)}
                 </Pie>
                 <Tooltip contentStyle={tooltipStyle} />
@@ -83,7 +83,7 @@ export default function Analysis({ subjectId }: { subjectId: string }) {
                 <CartesianGrid strokeDasharray="4 4" stroke={ink} opacity={0.3} />
                 <XAxis dataKey="name" stroke={ink} /><YAxis allowDecimals={false} stroke={ink} />
                 <Tooltip contentStyle={tooltipStyle} cursor={{ fill: 'var(--pill)' }} />
-                <RBar dataKey="count" fill="#bcd3ea" stroke={ink} strokeWidth={2} radius={[8, 8, 0, 0]} animationDuration={900} />
+                <RBar dataKey="count" fill="#e9c9b8" stroke={ink} strokeWidth={2} radius={[8, 8, 0, 0]} animationDuration={900} />
               </BarChart>
             </ResponsiveContainer>
           </div>
@@ -98,7 +98,7 @@ export default function Analysis({ subjectId }: { subjectId: string }) {
                 <CartesianGrid strokeDasharray="4 4" stroke={ink} opacity={0.3} />
                 <XAxis type="number" allowDecimals={false} stroke={ink} /><YAxis type="category" dataKey="name" width={150} stroke={ink} tick={{ fontSize: 13 }} />
                 <Tooltip contentStyle={tooltipStyle} cursor={{ fill: 'var(--pill)' }} />
-                <RBar dataKey="count" fill="#f3b8c2" stroke={ink} strokeWidth={2} radius={[0, 8, 8, 0]} animationDuration={900} />
+                <RBar dataKey="count" fill="#f6bfd3" stroke={ink} strokeWidth={2} radius={[0, 8, 8, 0]} animationDuration={900} />
               </BarChart>
             </ResponsiveContainer>
           </div>

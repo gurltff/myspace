@@ -40,9 +40,9 @@ export default function Practicals() {
   };
 
   return (
-    <div className="space-y-4">
+    <div className="space-y-6">
       <Box className="pt-4">
-        <PageTitle sub="experiments, circuits, observation tables & viva prep">PRACTICALS</PageTitle>
+        <PageTitle sub="experiments, circuits, observation tables & viva prep">Practicals</PageTitle>
         <SubjectPicker value={subjectId} onChange={(id) => { setSubjectId(id); setExpId(null); }} />
         <Tabs tabs={[{ id: 'list', label: 'experiments' }, { id: 'exam', label: '🎓 practical exam mode' }]} value={mode} onChange={(m) => { setMode(m); setExpId(null); }} />
       </Box>
@@ -242,7 +242,7 @@ function ExperimentPage({ exp, onBack }: { exp: Experiment; onBack: () => void }
         </motion.div>
       </Box>
 
-      <div className="grid sm:grid-cols-2 gap-4">
+      <div className="grid sm:grid-cols-2 gap-6">
         <Box title="precautions" delay={0.18}><TextArea rows={4} value={exp.precautions} onChange={(e) => set((x) => void (x.precautions = e.target.value))} /></Box>
         <Box title="sources of error" delay={0.2}><TextArea rows={4} value={exp.errors} onChange={(e) => set((x) => void (x.errors = e.target.value))} /></Box>
       </div>

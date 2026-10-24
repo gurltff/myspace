@@ -9,7 +9,8 @@ import { generatePlan } from '../lib/planner';
 import { addDays, ymd } from '../lib/dates';
 import { uid } from '../lib/id';
 
-export const SUBJECT_COLORS = ['#a8c3a0', '#f2b5c0', '#b9cfe8', '#f3d58f', '#c9b6e4', '#f0b98d'];
+export const SUBJECT_COLORS = ['#f2b7c1', '#e9c9b8', '#f6e2c4', '#d9a7b0', '#cfb2a8', '#f7d9dc'];
+export const OLD_SUBJECT_COLORS = ['#a8c3a0', '#f2b5c0', '#b9cfe8', '#f3d58f', '#c9b6e4', '#f0b98d', '#d6bfe0', '#f6bfd3', '#b5cff0', '#f7f0ae', '#c4e0d2', '#f3cfb8'];
 
 export function emptyData(): AppData {
   const now = new Date().toISOString();

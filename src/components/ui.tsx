@@ -1,39 +1,60 @@
 import { motion, AnimatePresence } from 'framer-motion';
 import { useEffect, type ReactNode } from 'react';
 
-export function Box({ title, children, className = '', delay = 0, hover = false, right }: {
+const EASE = [0.22, 1, 0.36, 1] as const;
+
+const MONTH = new Date().toLocaleDateString('en', { month: 'long' }).toUpperCase();
+
+/** A die-cut paper card: postcard (default), newspaper ("notepad") or chocolate card. */
+export function Box({ title, children, className = '', delay = 0, hover = false, right, variant = 'player', bar, lace = true }: {
   title?: ReactNode; children: ReactNode; className?: string; delay?: number; hover?: boolean; right?: ReactNode;
+  variant?: 'player' | 'notepad' | 'choco'; bar?: string; lace?: boolean;
 }) {
+  const anim = {
+    initial: { opacity: 0, y: 22, rotate: -0.6 },
+    animate: { opacity: 1, y: 0, rotate: 0 },
+    transition: { duration: 0.75, ease: EASE, delay },
+  };
+  if (variant === 'notepad') {
+    const head = bar ?? (typeof title === 'string' ? title : 'Wishful Study Club');
+    return (
+      <motion.section {...anim} className={`notepad ${hover ? 'hoverable' : ''}`}>
+        <div className="np-bar flex items-center justify-center gap-2"><span>{head.replace(/ - Notepad$/, '').replace(/\.txt$/, '')}</span>{right}</div>
+        <div className="np-menu"><span>1st edition</span><span>wish for your grades</span><span>{MONTH} MAIL</span></div>
+        <div className={`p-3 ${className}`}>{children}</div>
+      </motion.section>
+    );
+  }
   return (
-    <motion.section
-      initial={{ opacity: 0, y: 18, scale: 0.98 }}
-      animate={{ opacity: 1, y: 0, scale: 1 }}
-      transition={{ type: 'spring', stiffness: 160, damping: 20, delay }}
-      className={`nest-box ${hover ? 'hoverable' : ''} p-3 ${className}`}
-    >
-      {title && (
-        <div className="flex items-center gap-2 mb-2">
-          <h2 className="nest-pill flex-1 text-[17px] sm:text-[19px]">{title}</h2>
+    <motion.section {...anim} className={`nest-box ${variant === 'choco' ? 'choco' : ''} ${lace && variant !== 'choco' ? 'lacey' : ''} ${hover ? 'hoverable' : ''}`}>
+      {(title || bar) && (
+        <div className="win-bar">
+          <span className="win-title">{title ?? bar}</span>
           {right}
+          <span className="win-btns"><span /><span /></span>
         </div>
       )}
-      {children}
+      <div className={`win-body ${className}`}>{children}</div>
     </motion.section>
   );
 }
 
 export function PageTitle({ children, sub }: { children: ReactNode; sub?: ReactNode }) {
   return (
-    <div className="mb-3">
+    <div className="mb-3 relative">
       <motion.h1
-        initial={{ opacity: 0, y: -10, rotate: -2 }}
+        initial={{ opacity: 0, y: 14, rotate: -2 }}
         animate={{ opacity: 1, y: 0, rotate: 0 }}
-        transition={{ type: 'spring', stiffness: 120, damping: 12 }}
-        className="nest-title text-[34px] sm:text-[46px] break-words"
+        transition={{ duration: 1, ease: EASE }}
+        className="nest-title text-[40px] sm:text-[56px] break-words pr-16"
       >
         {children}
       </motion.h1>
-      {sub && <p className="text-muted mt-1 text-[17px]">{sub}</p>}
+      {sub && (
+        <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.35, duration: 0.8 }} className="label-blue mt-2 text-[18px]">
+          {sub}
+        </motion.p>
+      )}
     </div>
   );
 }
@@ -67,21 +88,21 @@ export function Select(p: React.SelectHTMLAttributes<HTMLSelectElement>) {
 
 export function Tag({ children, color, onClick, title }: { children: ReactNode; color?: string; onClick?: () => void; title?: string }) {
   return (
-    <span title={title} onClick={onClick} className={`nest-tag ${onClick ? 'cursor-pointer hover:scale-105 transition' : ''}`} style={color ? { background: color, color: '#3e3a2e' } : undefined}>
+    <span title={title} onClick={onClick} className={`nest-tag ${onClick ? 'cursor-pointer hover:scale-105 transition' : ''}`} style={color ? { background: color, color: '#5a3631' } : undefined}>
       {children}
     </span>
   );
 }
 
-export function Bar({ value, color = 'var(--sage)', label }: { value: number | null; color?: string; label?: string }) {
+export function Bar({ value, color = 'var(--pink)', label }: { value: number | null; color?: string; label?: string }) {
   return (
-    <div className="w-full h-4 rounded-full border-2 border-line bg-panel2 overflow-hidden relative" title={label}>
+    <div className="w-full h-3.5 rounded-full border-[1.5px] border-line bg-panel overflow-hidden relative" title={label}>
       <motion.div
         className="h-full rounded-full"
-        style={{ background: color, backgroundImage: 'repeating-linear-gradient(45deg, rgba(255,255,255,.35) 0 6px, transparent 6px 12px)' }}
+        style={{ background: color, backgroundImage: 'linear-gradient(rgba(255,255,255,.65), rgba(255,255,255,0) 60%)' }}
         initial={{ width: 0 }}
         animate={{ width: `${value ?? 0}%` }}
-        transition={{ type: 'spring', stiffness: 60, damping: 15 }}
+        transition={{ duration: 1.2, ease: EASE }}
       />
     </div>
   );
@@ -96,7 +117,7 @@ export function Stars({ value, onChange }: { value: number | null; onChange?: (v
           type="button"
           onClick={() => onChange?.(value === n ? null : n)}
           className={`text-[17px] leading-none transition-transform hover:scale-125 ${onChange ? 'cursor-pointer' : 'cursor-default'}`}
-          style={{ color: value && n <= value ? '#e9b949' : 'var(--muted)', opacity: value && n <= value ? 1 : 0.4 }}
+          style={{ color: value && n <= value ? '#c9707f' : 'var(--muted)', opacity: value && n <= value ? 1 : 0.4 }}
         >
           ★
         </button>
@@ -116,18 +137,18 @@ export function Modal({ open, onClose, title, children, wide }: { open: boolean;
       {open && (
         <motion.div className="fixed inset-0 z-[100] flex items-end sm:items-center justify-center p-3 bg-black/30 backdrop-blur-[2px]" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} onClick={onClose}>
           <motion.div
-            className={`nest-box p-4 w-full ${wide ? 'max-w-4xl' : 'max-w-lg'} max-h-[88vh] overflow-y-auto nest-scroll`}
-            initial={{ y: 40, scale: 0.94, opacity: 0 }}
+            className={`nest-box w-full ${wide ? 'max-w-4xl' : 'max-w-lg'} max-h-[88vh] overflow-y-auto nest-scroll`}
+            initial={{ y: 30, scale: 0.97, opacity: 0 }}
             animate={{ y: 0, scale: 1, opacity: 1 }}
-            exit={{ y: 30, scale: 0.96, opacity: 0 }}
-            transition={{ type: 'spring', stiffness: 220, damping: 22 }}
+            exit={{ y: 20, scale: 0.98, opacity: 0 }}
+            transition={{ duration: 0.45, ease: EASE }}
             onClick={(e) => e.stopPropagation()}
           >
-            <div className="flex items-center gap-2 mb-3">
-              <h3 className="nest-pill flex-1">{title}</h3>
-              <button className="nest-btn ghost small" onClick={onClose} aria-label="close">✕</button>
+            <div className="win-bar sticky top-0 z-10 bg-panel rounded-t-lg">
+              <h3 className="win-title">{title}</h3>
+              <button className="text-[13px] hover:text-ink transition" onClick={onClose} aria-label="close">✕</button>
             </div>
-            {children}
+            <div className="win-body">{children}</div>
           </motion.div>
         </motion.div>
       )}
@@ -142,11 +163,14 @@ export function Tabs<T extends string>({ tabs, value, onChange }: { tabs: { id: 
         <button
           key={t.id}
           onClick={() => onChange(t.id)}
-          className="relative font-round text-[15px] px-3 py-0.5 rounded-full border-2 border-line transition-transform hover:-translate-y-0.5"
-          style={{ background: value === t.id ? 'var(--sage)' : 'var(--panel2)', color: value === t.id ? '#3e3a2e' : 'var(--ink)' }}
+          className="relative font-bubble text-[13px] px-3.5 py-1 rounded-full border-[1.5px] border-line transition-colors duration-300 hover:bg-pill"
+          style={{ color: value === t.id ? 'var(--cream)' : 'var(--ink)', background: value === t.id ? undefined : 'var(--cream)' }}
         >
-          {value === t.id && <motion.span layoutId="tab-dot" className="absolute -top-1.5 -right-1 text-[12px]">✿</motion.span>}
-          {t.label}
+          {value === t.id && (
+            <motion.span layoutId="tab-bg" className="absolute inset-0 rounded-full" transition={{ duration: 0.5, ease: EASE }}
+              style={{ background: 'var(--choco)', boxShadow: '3px 4px 0 var(--shadow)' }} />
+          )}
+          <span className="relative">{value === t.id ? '♥ ' : ''}{t.label}</span>
         </button>
       ))}
     </div>
@@ -154,19 +178,19 @@ export function Tabs<T extends string>({ tabs, value, onChange }: { tabs: { id: 
 }
 
 export function Empty({ children }: { children: ReactNode }) {
-  return <div className="text-center text-muted py-6 border-2 border-dashed border-line/40 rounded-xl">{children}</div>;
+  return <div className="text-center text-muted py-6 border-[1.5px] border-dashed border-line/60 rounded-xl">{children}</div>;
 }
 
 export function Stagger({ children, className = '' }: { children: ReactNode; className?: string }) {
   return (
-    <motion.div className={className} initial="hidden" animate="show" variants={{ hidden: {}, show: { transition: { staggerChildren: 0.04 } } }}>
+    <motion.div className={className} initial="hidden" animate="show" variants={{ hidden: {}, show: { transition: { staggerChildren: 0.06 } } }}>
       {children}
     </motion.div>
   );
 }
 export function Item({ children, className = '', ...rest }: { children: ReactNode; className?: string } & Omit<React.HTMLAttributes<HTMLDivElement>, 'onAnimationStart' | 'onDrag' | 'onDragStart' | 'onDragEnd'>) {
   return (
-    <motion.div {...rest} className={className} variants={{ hidden: { opacity: 0, x: -10 }, show: { opacity: 1, x: 0 } }} transition={{ type: 'spring', stiffness: 200, damping: 20 }}>
+    <motion.div {...rest} className={className} variants={{ hidden: { opacity: 0, x: -10 }, show: { opacity: 1, x: 0 } }} transition={{ duration: 0.55, ease: EASE }}>
       {children}
     </motion.div>
   );

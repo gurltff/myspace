@@ -16,9 +16,9 @@ export default function Assessment() {
   const [tab, setTab] = useLocalState<T>('assess-tab', 'cards');
   const [subjectId, setSubjectId] = useLocalState('assess-subject', '');
   return (
-    <div className="space-y-4">
+    <div className="space-y-6">
       <Box className="pt-4">
-        <PageTitle sub="flashcards with spaced repetition, quizzes & mock tests">ASSESSMENT</PageTitle>
+        <PageTitle sub="flashcards with spaced repetition, quizzes & mock tests">Assessment</PageTitle>
         <SubjectPicker value={subjectId} onChange={setSubjectId} />
         <Tabs tabs={[{ id: 'cards', label: 'flashcards' }, { id: 'quiz', label: 'topic quiz' }, { id: 'mock', label: 'mock test' }, { id: 'tracker', label: 'score tracker' }]} value={tab} onChange={setTab} />
       </Box>
@@ -83,7 +83,7 @@ function Flashcards({ subjectId }: { subjectId: string }) {
             const n = cards.filter((c) => c.box === b).length;
             return (
               <div key={b} className="text-center border-2 border-line rounded-lg py-1 bg-panel2">
-                <div className="font-bubble text-[18px]">{n}</div>
+                <div className="font-round font-extrabold text-[18px]">{n}</div>
                 <div className="text-[12px] text-muted">box {b} · {BOX_INTERVALS[b - 1]}d</div>
               </div>
             );
@@ -171,7 +171,7 @@ function Quiz({ subjectId }: { subjectId: string }) {
     <Box title="quick topic quiz" delay={0.05}>
       {queue && (
         <motion.div initial={{ scale: 0.9, opacity: 0 }} animate={{ scale: 1, opacity: 1 }} className="nest-box !bg-pill p-3 mb-3 text-center">
-          <p className="font-bubble text-[26px]">{Math.round((tally.reduce((a, b) => a + b, 0) / Math.max(1, tally.length)) * 100)}%</p>
+          <p className="font-round font-extrabold text-[26px]">{Math.round((tally.reduce((a, b) => a + b, 0) / Math.max(1, tally.length)) * 100)}%</p>
           <p>quiz done! {tally.filter((x) => x === 1).length} right · {tally.filter((x) => x === 0.5).length} partial · {tally.filter((x) => x === 0).length} wrong</p>
         </motion.div>
       )}
@@ -204,7 +204,7 @@ function Mock({ subjectId }: { subjectId: string }) {
   if (phase !== 'idle' && test) {
     return (
       <Box title={phase === 'running' ? 'mock test — go go go!' : 'mark your answers'}>
-        {phase === 'running' && <div className="text-center mb-3"><span className="nest-box inline-block px-4 font-bubble text-[30px]">{Math.floor(left / 60)}:{String(left % 60).padStart(2, '0')}</span></div>}
+        {phase === 'running' && <div className="text-center mb-3"><span className="nest-box inline-block px-4 font-round font-extrabold text-[30px]">{Math.floor(left / 60)}:{String(left % 60).padStart(2, '0')}</span></div>}
         <ol className="space-y-2 list-decimal pl-6">
           {test.qs.map((q) => (
             <li key={q.id} className="text-[17px]">
@@ -258,9 +258,9 @@ function Tracker({ subjectId }: { subjectId: string }) {
                 <XAxis dataKey="date" stroke={ink} /><YAxis domain={[0, 100]} unit="%" stroke={ink} />
                 <Tooltip contentStyle={tooltipStyle} />
                 <Legend />
-                <Line type="monotone" dataKey="quiz" stroke="#7f9a6c" strokeWidth={3} dot={{ r: 5, stroke: ink, strokeWidth: 2, fill: '#a9bf96' }} connectNulls animationDuration={1000} />
+                <Line type="monotone" dataKey="quiz" stroke="#7a4740" strokeWidth={3} dot={{ r: 5, stroke: ink, strokeWidth: 2, fill: '#e9c9b8' }} connectNulls animationDuration={1000} />
                 <Line type="monotone" dataKey="mock" stroke="#d98a9a" strokeWidth={3} dot={{ r: 5, stroke: ink, strokeWidth: 2, fill: '#f3b8c2' }} connectNulls animationDuration={1000} />
-                <Line type="monotone" dataKey="paper" stroke="#7d97b3" strokeWidth={3} dot={{ r: 5, stroke: ink, strokeWidth: 2, fill: '#bcd3ea' }} connectNulls animationDuration={1000} />
+                <Line type="monotone" dataKey="paper" stroke="#c9a48f" strokeWidth={3} dot={{ r: 5, stroke: ink, strokeWidth: 2, fill: '#f6e2c4' }} connectNulls animationDuration={1000} />
               </LineChart>
             </ResponsiveContainer>
           </div>

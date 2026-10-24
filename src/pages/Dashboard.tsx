@@ -1,7 +1,7 @@
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { Box, Bar, Btn, Empty, PageTitle, Stagger, Item, Tag } from '../components/ui';
-import { Hero } from '../components/Hero';
+import { TrackPlayer, MiniCalendar, ExamHeart } from '../components/Hero';
 import { useStore, update, markStudied } from '../store/store';
 import { activeSubjects, avgMastery, buildNudges, cardsDue, topicMastery } from '../store/derive';
 import { behindBy } from '../lib/planner';
@@ -11,8 +11,8 @@ import { diffDays, prettyDate, ymd } from '../lib/dates';
 function Countdown({ label, date, color }: { label: string; date: string; color: string }) {
   const d = diffDays(ymd(), date);
   return (
-    <motion.div whileHover={{ scale: 1.04, rotate: -1 }} className="flex items-center gap-2 border-2 border-line rounded-xl px-2 py-1 bg-panel2">
-      <div className="w-12 h-12 rounded-lg border-2 border-line grid place-items-center font-bubble text-[18px]" style={{ background: color, color: '#3e3a2e' }}>{d}</div>
+    <motion.div whileHover={{ x: 4 }} transition={{ duration: 0.4 }} className="flex items-center gap-2 border-[1.5px] border-line rounded-xl px-2 py-1 bg-panel">
+      <div className="w-12 h-12 rounded-full border-[1.5px] border-white grid place-items-center font-round font-extrabold text-[17px] shadow-md" style={{ background: `radial-gradient(circle at 35% 30%, #fff, ${color})`, color: '#5a4565' }}>{d}</div>
       <div className="leading-tight text-[15px]">
         <div className="font-bold">{label}</div>
         <div className="text-muted">{d === 0 ? 'today!!' : `${d} day${d === 1 ? '' : 's'} · ${prettyDate(date)}`}</div>
@@ -54,23 +54,39 @@ export default function Dashboard() {
   };
 
   return (
-    <div className="space-y-4">
-      <Box className="pt-4">
-        <PageTitle>WELCOME BACK {s.settings.name.toUpperCase()} !!</PageTitle>
-        <p className="text-[17px] mb-3">
-          disclaimer!! this is your study nest. {tasks.length ? <>you have <b>{tasks.filter((t) => !t.done).length}</b> task{tasks.length === 1 ? '' : 's'} left today</> : 'no tasks planned for today'}
-          {due.length ? <> and <b>{due.length}</b> flashcard{due.length === 1 ? '' : 's'} due</> : null}. take it slow, sip some water and have fun ♡
-        </p>
-        <Hero>
-          <div className="flex flex-wrap gap-2">
-            <span className="nest-tag bg-panel">🔥 {st}-day streak</span>
-            {countdowns[0] && <span className="nest-tag bg-panel">⏳ {countdowns[0].label} in {diffDays(today, countdowns[0].date)}d</span>}
+    <div className="space-y-6">
+      <PageTitle sub={<>you have <b>{tasks.filter((t) => !t.done).length}</b> task{tasks.length === 1 ? '' : 's'} left today{due.length ? <> and <b>{due.length}</b> flashcard{due.length === 1 ? '' : 's'} due</> : null} · take it slow ♡</>}>
+        Welcome back, {s.settings.name} &lt;33
+      </PageTitle>
+      <div className="grid md:grid-cols-[minmax(0,1.75fr)_minmax(0,1fr)] gap-6 items-start !mt-10">
+        <TrackPlayer />
+        <MiniCalendar />
+      </div>
+      <div className="grid md:grid-cols-[minmax(0,1fr)_auto_minmax(0,0.9fr)] gap-6 items-center">
+        <Box variant="notepad" bar="The Daily Nest" delay={0.05}>
+          <p className="text-[14px]">
+            studynest is {s.settings.name}'s study album for {s.semesters.find((x) => !x.archived)?.name ?? 'this semester'}. performed by {subs.map((x) => x.name).join(', ') || 'no subjects yet'}.
+          </p>
+          <div className="mt-2 text-[14px] space-y-0.5">
+            <div className="flex justify-between"><span>streak:</span><span>🔥 {st}</span></div>
+            <div className="flex justify-between"><span>cards due:</span><span>{due.length}</span></div>
+            <div className="flex justify-between"><span>genre:</span><span>physics (hons)</span></div>
           </div>
-        </Hero>
-      </Box>
+        </Box>
+        <div className="flex justify-center"><ExamHeart /></div>
+        <motion.div initial={{ opacity: 0, rotate: -12, scale: 0.9 }} animate={{ opacity: 1, rotate: -6, scale: 1 }} transition={{ duration: 0.9, ease: [0.22, 1, 0.36, 1], delay: 0.3 }} whileHover={{ rotate: -2, scale: 1.03 }}
+          className="relative mx-auto">
+          <div className="rounded-[22px] bg-panel border-[1.5px] border-line px-6 py-5 text-center" style={{ boxShadow: '0 0 0 7px #fff, 0 0 0 8.5px rgba(110,70,64,.3), 7px 9px 0 8px var(--shadow)' }}>
+            <div className="rounded-full border-[1.5px] border-line px-4 py-2 bg-pill">
+              <span className="nest-title text-[26px] leading-tight" style={{ WebkitTextStroke: '4px var(--title-stroke)', textShadow: 'none' }}>romanticize<br />your studies</span>
+            </div>
+          </div>
+          <p className="font-hand text-[22px] text-choco dark:text-pink text-center mt-3 -rotate-3">Die-cut Sticker ♥</p>
+        </motion.div>
+      </div>
 
-      <div className="grid gap-4 md:grid-cols-2">
-        <Box title="today's tasks" delay={0.05} right={<Link to="/subjects/plan"><Btn small variant="ghost">plan →</Btn></Link>}>
+      <div className="grid gap-6 md:grid-cols-2">
+        <Box title="today's checklist" delay={0.05} right={<Link to="/subjects/plan"><Btn small variant="ghost">plan →</Btn></Link>}>
           {tasks.length ? (
             <Stagger className="space-y-1.5">
               {tasks.map((t) => (
@@ -153,14 +169,14 @@ export default function Dashboard() {
       </Box>
 
       <div className="lg:hidden">
-        <Box title="chatbox" delay={0.3}>
-          <ul className="space-y-1.5 text-[16px]">{nudges.map((n) => <li key={n}>🐱 {n}</li>)}</ul>
+        <Box title="Postcard" delay={0.3}>
+          <ul className="space-y-1.5 text-[14px]">{nudges.map((n) => <li key={n}><span className="text-pink">♡</span> {n}</li>)}</ul>
         </Box>
       </div>
 
-      <div className="grid md:grid-cols-[1fr_1.3fr] gap-4">
+      <div className="grid md:grid-cols-[1fr_1.3fr] gap-6">
         <Box title="site updates" delay={0.3}>
-          <div className="border-l-4 border-sage pl-3 space-y-2 text-[15px] max-h-56 overflow-y-auto nest-scroll">
+          <div className="border-l-2 border-pink pl-3 space-y-2 text-[15px] max-h-56 overflow-y-auto nest-scroll">
             {s.posts.slice().sort((a, b) => b.date.localeCompare(a.date)).slice(0, 4).map((p) => (
               <div key={p.id}><div className="text-muted text-[13px]">{prettyDate(p.date)}</div><Link to="/ramble" className="hover:underline">{p.title}</Link></div>
             ))}
@@ -173,7 +189,7 @@ export default function Dashboard() {
           <p className="text-[17px]">
             ELLO! it's me, {s.settings.name}! welcome to my lil corner of the internet :D this nest holds my syllabus, PYQs, practicals and rambles. it makes plans and papers with plain old rules (no AI here!) and tracks what i'm weak at.
           </p>
-          <p className="font-bubble text-[22px] mt-3 text-sage-dark" style={{ animation: 'bob 3s ease-in-out infinite', display: 'inline-block' }}>enjoy your stay !!</p>
+          <p className="nest-title text-[40px] mt-2" style={{ animation: 'bob 5s ease-in-out infinite', display: 'inline-block' }}>enjoy your stay</p>
         </Box>
       </div>
     </div>

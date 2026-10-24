@@ -156,7 +156,7 @@ export default function Papers({ subjectId }: { subjectId: string }) {
           <div className="space-y-1.5">
             {papers.map((p) => (
               <div key={p.id} className="flex flex-wrap items-center gap-2 border-2 border-line/30 rounded-xl px-2 py-1 bg-panel2">
-                <span className="font-bubble text-[18px]">{p.year}</span>
+                <span className="font-round font-extrabold text-[18px]">{p.year}</span>
                 <span className="flex-1 min-w-0 truncate">{p.title} <span className="text-[13px] text-muted">· {s.questions.filter((q) => q.paperId === p.id).length} questions</span></span>
                 {p.fileId && <Btn small variant="sky" onClick={async () => { const b = await loadFile(p.fileId!); if (b) window.open(URL.createObjectURL(b), '_blank'); else alert('File not found on this device.'); }}>view original</Btn>}
                 <Btn small variant="ghost" onClick={() => { const w = window.open('', '_blank'); if (w) { w.document.title = p.title; w.document.body.style.cssText = 'white-space:pre-wrap;font-family:monospace;padding:20px'; w.document.body.textContent = p.rawText; } }}>text</Btn>

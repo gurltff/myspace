@@ -54,7 +54,7 @@ export default function Bank({ subjectId }: { subjectId: string }) {
                 <motion.div key={q.id} initial={{ opacity: 0, y: 6 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: Math.min(i, 12) * 0.03 }} className="border-2 border-line/40 rounded-xl p-2 bg-panel2">
                   <div className="flex gap-2">
                     <p className="flex-1 text-[16px]">{q.text}</p>
-                    {q.marks !== undefined && <span className="font-bubble text-[15px] shrink-0">[{q.marks}]</span>}
+                    {q.marks !== undefined && <span className="font-round font-extrabold text-[15px] shrink-0">[{q.marks}]</span>}
                   </div>
                   {q.answer && <p className="text-[14px] text-muted">answer: {q.answer}</p>}
                   <div className="flex flex-wrap gap-1.5 mt-1 items-center text-[13px]">

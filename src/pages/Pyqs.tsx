@@ -24,9 +24,9 @@ export default function Pyqs() {
   const tab = (loc.pathname.split('/')[2] || 'papers') as T;
   const [subjectId, setSubjectId] = useLocalState('pyq-subject', '');
   return (
-    <div className="space-y-4">
+    <div className="space-y-6">
       <Box className="pt-4">
-        <PageTitle sub="previous year papers, question bank & practice paper generator">PYQS & PAPERS</PageTitle>
+        <PageTitle sub="previous year papers, question bank & practice paper generator">PYQs &amp; Papers</PageTitle>
         <SubjectPicker value={subjectId} onChange={setSubjectId} />
         <Tabs tabs={TABS as unknown as { id: T; label: string }[]} value={tab} onChange={(t) => nav('/pyqs/' + t)} />
       </Box>

@@ -32,8 +32,8 @@ export default function Settings() {
   };
 
   return (
-    <div className="space-y-4">
-      <Box className="pt-4"><PageTitle sub="profile, constants & your data">SETTINGS</PageTitle></Box>
+    <div className="space-y-6">
+      <Box className="pt-4"><PageTitle sub="profile, constants & your data">Settings</PageTitle></Box>
       <Box title="profile" delay={0.05}>
         <div className="grid sm:grid-cols-2 gap-3">
           <Field label="your name"><Input value={st.name} onChange={(e) => set({ name: e.target.value })} /></Field>

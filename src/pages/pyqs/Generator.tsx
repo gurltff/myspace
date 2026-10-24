@@ -221,7 +221,7 @@ function PaperView({ paper, onClose }: { paper: GeneratedPaper; onClose: () => v
 
         {tab === 'timer' && (
           <div className="text-center mb-3 sticky top-16 z-10">
-            <motion.div animate={running ? { scale: [1, 1.03, 1] } : {}} transition={{ repeat: Infinity, duration: 1 }} className={`inline-block nest-box px-5 py-1 font-bubble text-[32px] ${left < 600 ? 'text-[#c0606f]' : ''}`}>{fmtTime(left)}</motion.div>
+            <motion.div animate={running ? { scale: [1, 1.03, 1] } : {}} transition={{ repeat: Infinity, duration: 1 }} className={`inline-block nest-box px-5 py-1 font-round font-extrabold text-[32px] ${left < 600 ? 'text-[#c0606f]' : ''}`}>{fmtTime(left)}</motion.div>
             <div className="flex gap-2 justify-center mt-2">
               <Btn small onClick={() => setRunning(!running)}>{running ? 'pause' : left === paper.durationHours * 3600 ? 'start' : 'resume'}</Btn>
               <Btn small variant="ghost" onClick={() => { setRunning(false); setLeft(paper.durationHours * 3600); }}>reset</Btn>

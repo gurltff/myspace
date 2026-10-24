@@ -1,7 +1,8 @@
 import { useState } from 'react';
 import { supabase } from '../store/supabase';
 import { Btn, Input, Field } from '../components/ui';
-import { CatSticker, DangoSticker } from '../components/Stickers';
+import { Unicorn, Bow } from '../components/Stickers';
+import { DreamBg } from '../components/Layout';
 
 export default function Login() {
   const [email, setEmail] = useState('');
@@ -16,10 +17,11 @@ export default function Login() {
   };
   return (
     <div className="min-h-screen grid place-items-center p-4">
+      <DreamBg />
       <div className="nest-box p-6 w-full max-w-sm relative">
-        <CatSticker size={90} className="sticker" style={{ right: -30, top: -50 }} />
-        <DangoSticker size={70} className="sticker" style={{ left: -34, bottom: -20 }} />
-        <h1 className="nest-title text-[38px] mb-1">StudyNest</h1>
+        <Bow size={90} className="sticker sway" style={{ right: -30, top: -50 }} />
+        <Unicorn size={170} className="sticker" style={{ left: -90, bottom: -60 }} />
+        <h1 className="nest-title text-[56px] mb-1">StudyNest</h1>
         <p className="text-muted mb-4">your lil study corner ✿ log in to continue</p>
         <div className="space-y-3">
           <Field label="email"><Input type="email" value={email} onChange={(e) => setEmail(e.target.value)} /></Field>
